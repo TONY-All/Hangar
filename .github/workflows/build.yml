@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: $GITHUB_WORKSPACE/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom_deprecated.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 

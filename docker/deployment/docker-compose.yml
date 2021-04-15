@@ -33,7 +33,7 @@ services:
       dockerfile: docker/deployment/hangar-backend/Dockerfile
     depends_on:
       - 'db'
-      - 'auth'
+#      - 'auth'
       - 'mail'
     stdin_open: true
     labels:
@@ -72,39 +72,39 @@ services:
       - "traefik.http.routers.hangar-new-mail.tls.domains[0].sans=*.minidigger.me"
     networks:
       - web
-  auth:
-    image: registry.gitlab.com/minidigger/hangarauth
-    depends_on:
-      - 'db'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.hangar-new-auth.loadbalancer.server.port=8000"
-      - "traefik.http.routers.hangar-new-auth.rule=Host(`hangar-new-auth.minidigger.me`) || Host(`hangar-auth.benndorf.dev`)"
-      - "traefik.http.routers.hangar-new-auth.entrypoints=web-secure"
-      - "traefik.http.routers.hangar-new-auth.tls=true"
-      - "traefik.http.routers.hangar-new-auth.tls.options=default"
-      - "traefik.http.routers.hangar-new-auth.tls.certresolver=default"
-      - "traefik.http.routers.hangar-new-auth.tls.domains[0].main=minidigger.me"
-      - "traefik.http.routers.hangar-new-auth.tls.domains[0].sans=*.minidigger.me"
-    environment:
-      SECRET_KEY: "TzNc3RTpfVn1xxNV90PPGEfs7SZhy5"
-      EMAIL_HOST: "mail"
-      EMAIL_PORT: "1025"
-      EMAIL_SSL: "false"
-      EMAIL_TLS: "false"
-      EMAIL_HOST_USER: "dum"
-      EMAIL_HOST_PASSWORD: "dum"
-      HANGAR_HOST: "https://hangar.benndorf.dev"
-      DB_NAME: "hangarauth"
-      DB_USER: "hangar"
-      DB_PASSWORD: "hangar"
-      DB_HOST: "hangar_new_db"
-      REDIS_HOST: "hangar_new_redis"
-      SSO_ENDPOINT_ore: "{ 'sync_sso_endpoint': ('http://hangar_new_backend:9000/api/sync_sso'), 'sso_secret': 'changeme', 'api_key': 'changeme' }"
-      DEBUG: "true" # for reasons I don't understand, auth only runs with debug right now. don't question it, unless you want to fix it
-      DJANGO_SETTINGS_MODULE: "spongeauth.settings.prod"
-    networks:
-      - web
+#  auth:
+#    image: registry.gitlab.com/minidigger/hangarauth
+#    depends_on:
+#      - 'db'
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.services.hangar-new-auth.loadbalancer.server.port=8000"
+#      - "traefik.http.routers.hangar-new-auth.rule=Host(`hangar-new-auth.minidigger.me`) || Host(`hangar-auth.benndorf.dev`)"
+#      - "traefik.http.routers.hangar-new-auth.entrypoints=web-secure"
+#      - "traefik.http.routers.hangar-new-auth.tls=true"
+#      - "traefik.http.routers.hangar-new-auth.tls.options=default"
+#      - "traefik.http.routers.hangar-new-auth.tls.certresolver=default"
+#      - "traefik.http.routers.hangar-new-auth.tls.domains[0].main=minidigger.me"
+#      - "traefik.http.routers.hangar-new-auth.tls.domains[0].sans=*.minidigger.me"
+#    environment:
+#      SECRET_KEY: "TzNc3RTpfVn1xxNV90PPGEfs7SZhy5"
+#      EMAIL_HOST: "mail"
+#      EMAIL_PORT: "1025"
+#      EMAIL_SSL: "false"
+#      EMAIL_TLS: "false"
+#      EMAIL_HOST_USER: "dum"
+#      EMAIL_HOST_PASSWORD: "dum"
+#      HANGAR_HOST: "https://hangar.benndorf.dev"
+#      DB_NAME: "hangarauth"
+#      DB_USER: "hangar"
+#      DB_PASSWORD: "hangar"
+#      DB_HOST: "hangar_new_db"
+#      REDIS_HOST: "hangar_new_redis"
+#      SSO_ENDPOINT_ore: "{ 'sync_sso_endpoint': ('http://hangar_new_backend:9000/api/sync_sso'), 'sso_secret': 'changeme', 'api_key': 'changeme' }"
+#      DEBUG: "true" # for reasons I don't understand, auth only runs with debug right now. don't question it, unless you want to fix it
+#      DJANGO_SETTINGS_MODULE: "spongeauth.settings.prod"
+#    networks:
+#      - web
   redis:
     image: redis:6.2.1
     networks:
@@ -113,7 +113,7 @@ services:
 networks:
   web:
     name: traefik-overlay
-    external: true
+    external: false
 
 volumes:
   db_data:
